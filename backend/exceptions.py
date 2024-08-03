@@ -1,5 +1,8 @@
-class NoSensorFoundException(Exception):
+class InconsistentPositionException(Exception):
     pass
 
-class InconsistentPositionException(Exception):
+class AlreadyPresentException(Exception):
+    pass
+
+class NotFoundException(Exception):
     pass
