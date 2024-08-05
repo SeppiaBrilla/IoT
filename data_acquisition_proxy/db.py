@@ -8,9 +8,13 @@ class DB:
     def __init__(self) -> None:
         super().__init__()
         self.token = os.environ.get("INFLUXDB_TOKEN")
-        self.org = "IoT"
-        self.bucket = "Light_data"
-        self.url = "http://localhost:8086"
+        self.org = os.environ.get("INFLUXDB_ORG") 
+        self.bucket:str = os.environ.get("INFLUXDB_BUCKET")
+        self.url = "https://us-east-1-1.aws.cloud2.influxdata.com"
+
+        assert self.token is not None, "could not find a token. Set it up via the INFLUXDB_TOKEN"
+        assert self.org is not None, "could not find a org. Set it up via the INFLUXDB_ORG"
+        assert self.bucket is not None, "could not find a bucket. Set it up via the INFLUXDB_BUCKET"
 
         self.client = influxdb_client.InfluxDBClient(url=self.url, 
                                                            token=self.token, 

@@ -18,6 +18,22 @@ class LuminositySensorData(SensorData):
             "time_stamp": self.time_stamp
         }
 
+class TemperatureSensorData(SensorData):
+    def __init__(self, id:str, position:str, temperature:float, time_stamp:float) -> None:
+        self.id = id
+        self.position = position
+        self.temperature = temperature
+        self.time_stamp = time_stamp
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "position": self.position,
+            "temperature": self.temperature,
+            "time_stamp": self.time_stamp
+        }
+
+
 class SensorConfiguration(SensorData):
     def __init__(self, id:str, position:str, ip:str) -> None:
         super().__init__(id, position)

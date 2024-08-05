@@ -1,4 +1,4 @@
-from data import LuminositySensorData, Plant, SensorConfiguration, Position
+from data import LuminositySensorData, Plant, SensorConfiguration, Position, TemperatureSensorData
 from exceptions import NotFoundException, InconsistentPositionException, AlreadyPresentException
 from db import DB
 
@@ -6,7 +6,7 @@ class SensorDataManager:
     def __init__(self) -> None:
         self.db = DB()
 
-    def add_data(self, data:LuminositySensorData):
+    def add_light_data(self, data:LuminositySensorData):
 
 
         sensor = self.db.get_device(data.id)
@@ -22,6 +22,24 @@ class SensorDataManager:
                                    "position": data.position}, 
                                    values={"light":str(data.luminosity)},
                                    time= data.time_stamp)
+
+    def add_temperature_data(self, data:TemperatureSensorData):
+
+
+        sensor = self.db.get_device(data.id)
+        if len(sensor) == 0:
+            raise NotFoundException(f"Sensor {data.id} not found in db")
+
+        sensor = sensor[0]
+        if sensor["position"] != data.position:
+            raise InconsistentPositionException(f"Sensor {data.id} is registered at position {sensor['position']}. Got position {data.position}")
+
+        self.db.insert_time_series(measurement="Temperature_data", tags={
+                                   "device": data.id,
+                                   "position": data.position}, 
+                                   values={"temperature":str(data.temperature)},
+                                   time= data.time_stamp)
+
 
     def new_sensor(self, device:SensorConfiguration):
         
