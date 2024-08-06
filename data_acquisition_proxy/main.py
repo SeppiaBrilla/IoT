@@ -262,6 +262,10 @@ def update_plant():
 def delete_plant():
     return delete_plant_handler(request.json)
 
+@app.route('/ping', methods=['GET'])
+def ping():
+    return jsonify({"status": "success"})
+
 # CoAP resource handlers
 class CoAPResource(resource.Resource):
     async def render_put(self, request):

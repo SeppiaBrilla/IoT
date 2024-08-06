@@ -1,4 +1,5 @@
 import asyncio
+import json
 from bleak import BleakClient, BleakScanner
 
 async def discover_devices():
@@ -48,7 +49,12 @@ if __name__ == "__main__":
     device_id = input("what is going to be the id of the new device?\n>> ")
     ssid = input("what is going to be the WIFI SSID of the new device?\n>> ")
     pwd = input("what is the WIFI password?\n>> ")
-    data = f"{device_id}_SEP_{ssid}_SEP_{pwd}"
+    device_ip = input("what is the WIFI device ip?\n>> ")
+    server_address = input("what is the server address?\n>> ")
+    protocol = input("what is the protocol to use?\n>> ")
+    plant = input("what is the associated plant?\n>> ")
+    data = {"device_id":device_id, "wifi_ssid":ssid, "wifi_pwd":pwd, "server_address":server_address, "protocol":protocol, "device_ip":device_ip, "plant":plant}
+    data = json.dumps(data)
     if target_device:
         asyncio.run(send_file(target_device.address, data, characteristic_uuid))
     else:
