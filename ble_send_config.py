@@ -11,9 +11,7 @@ async def send_file(address, data, characteristic_uuid):
     try:
         await client.connect()
         print(f"Connected to {address}")
-        
-        # BLE has a limit on the maximum size of data that can be sent in a single write operation.
-        # Usually, it is 20 bytes. Hence, we will chunk the data accordingly.
+
         CHUNK_SIZE = 20
         data = data.encode('utf-8')
         for i in range(0, len(data), CHUNK_SIZE):
@@ -29,7 +27,6 @@ async def send_file(address, data, characteristic_uuid):
         print(f"Disconnected from {address}")
 
 if __name__ == "__main__":
-    target_name = "mpy-01"
     characteristic_uuid = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
     print("Scanning for devices...")
@@ -51,11 +48,22 @@ if __name__ == "__main__":
     pwd = input("what is the WIFI password?\n>> ")
     device_ip = input("what is the WIFI device ip?\n>> ")
     server_address = input("what is the server address?\n>> ")
+    server_port = input("what is the server port?\n>> ")
     protocol = input("what is the protocol to use?\n>> ")
     plant = input("what is the associated plant?\n>> ")
-    data = {"device_id":device_id, "wifi_ssid":ssid, "wifi_pwd":pwd, "server_address":server_address, "protocol":protocol, "device_ip":device_ip, "plant":plant}
+    sampling_rate = input("what is the associated sampling rate? (in seconds)\n>> ")
+    position = input("what is the sensor position?\n>> ")
+    data = {
+        "device_id":device_id, 
+        "wifi_ssid":ssid, 
+        "wifi_pwd":pwd, 
+        "server_address":server_address, 
+        "server_port":server_port, 
+        "protocol":protocol, 
+        "device_ip":device_ip, 
+        "plant":plant, 
+        "sampling_rate": sampling_rate,
+        "position": position
+    }
     data = json.dumps(data)
-    if target_device:
-        asyncio.run(send_file(target_device.address, data, characteristic_uuid))
-    else:
-        print(f"Device named {target_name} not found.")
+    asyncio.run(send_file(target_device.address, data, characteristic_uuid))
