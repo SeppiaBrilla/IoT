@@ -1,0 +1,2 @@
+{"configs": [{"wifi_pwd": "PasswordWIFICasaPellegrino2017", "server_address": "192.168.1.241", "server_port": "5000", "plant": "plant01", "protocol": "HTTP", "device_ip": "192.168.1.242", "wifi_ssid": "Wi-FiCasaPellegrino", "device_id": "id01", "sampling_rate": 300},
+{"wifi_pwd": "PasswordWIFICasaPellegrino2017", "server_address": "192.168.1.241", "server_port": 5683, "plant": "plant01", "protocol": "COAP", "device_ip": "192.168.1.242", "wifi_ssid": "Wi-FiCasaPellegrino", "device_id": "id01", "sampling_rate": 300}]}
