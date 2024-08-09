@@ -81,7 +81,7 @@ class DB:
                      f'|> range(start: 0) ' \
                      f'|> filter(fn: (r) => r._measurement == "device" and {device_filter}) ' \
                      f'|> last()'
- 
+
         response = query_api.query(flux_query)
         result = []
         for table in response:
@@ -92,7 +92,18 @@ class DB:
                     record['updatedAt'] = record.get_time()
                     record[record.get_field()] = record.get_value()
                 result.append(record.values)
-        return result
+        return self.rebuild(result, "deviceId")
+
+    def rebuild(self, data, indexing):
+        final = {}
+        
+        for element in data:
+            id = element[indexing]
+            if not id in final:
+                final[id] = {indexing:id}
+            final[id][element["_field"]] = element["_value"]
+
+        return list(final.values())
 
     def update_device(self, device:SensorConfiguration):
         self.create_device(device)
@@ -144,7 +155,7 @@ class DB:
                     record['updatedAt'] = record.get_time()
                     record[record.get_field()] = record.get_value()
                 result.append(record.values)
-        return result
+        return self.rebuild(result, "positionId")
 
     def update_position(self, position:Position):
         self.create_position(position)
@@ -198,7 +209,7 @@ class DB:
                     record['updatedAt'] = record.get_time()
                     record[record.get_field()] = record.get_value()
                 result.append(record.values)
-        return result
+        return self.rebuild(result, "plantId")
 
     def update_plant(self, plant:Plant):
         self.create_plant(plant)

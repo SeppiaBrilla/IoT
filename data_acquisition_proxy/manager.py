@@ -25,7 +25,6 @@ class SensorDataManager:
 
     def add_temperature_data(self, data:TemperatureSensorData):
 
-
         sensor = self.db.get_device(data.id)
         if len(sensor) == 0:
             raise NotFoundException(f"Sensor {data.id} not found in db")

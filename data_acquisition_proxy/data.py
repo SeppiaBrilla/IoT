@@ -33,7 +33,6 @@ class TemperatureSensorData(SensorData):
             "time_stamp": self.time_stamp
         }
 
-
 class SensorConfiguration(SensorData):
     def __init__(self, id:str, position:str, ip:str) -> None:
         super().__init__(id, position)
